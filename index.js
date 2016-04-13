@@ -82,7 +82,7 @@
     return binary;
   };
 
-  var encoder = function(str) {
+  var encode = function(str) {
     var base64_Index = [];
     var binaryArray = [];
     for (var i = 0, len = str.length; i < len; ++i) {
@@ -136,15 +136,13 @@
     return base64;
   }
 
-  var decoder = function(_base64Str) {
+  var decode = function(_base64Str) {
     var _len = _base64Str.length;
     var extra_Zero_Count = 0;
     /**
      *计算在进行BASE64编码的时候，补了几个0
      */
     if (_base64Str.charAt(_len - 1) == '=') {
-      //alert(_base64Str.charAt(_len-1));
-      //alert(_base64Str.charAt(_len-2));
       if (_base64Str.charAt(_len - 2) == '=') { //两个等号说明补了4个0
         extra_Zero_Count = 4;
         _base64Str = _base64Str.substring(0, _len - 2);
@@ -204,17 +202,25 @@
         unicodeBinary = [];
       }
     }
-    return unicode;
+
+    var value = '';
+    for (var i = 0; i < unicode.length; i++) {
+      value += String.fromCharCode(unicode[i]);
+    }
+    return value;
   }
 
   var urlsafe_b64encode = function(input) {
-    return encoder(input).replace('+', '-').replace('/', '_');
+    return encode(input).replace('+', '-').replace('/', '_');
   };
-
+  var urlsafe_b64decode = function(input) {
+    return decode(input.replace('-', '+').replace('_', '/'));
+  };
   var Base64 = {
-    encoder: encoder,
-    decoder: decoder,
-    urlsafe_b64encode: urlsafe_b64encode
+    encode: encode,
+    decode: decode,
+    urlsafe_b64encode: urlsafe_b64encode,
+    urlsafe_b64decode: urlsafe_b64decode
   };
 
   if (typeof module !== 'undefined' && typeof exports === 'object') {
