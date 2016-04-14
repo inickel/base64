@@ -211,10 +211,10 @@
   }
 
   var urlsafe_b64encode = function(input) {
-    return encode(input).replace('+', '-').replace('/', '_');
+    return encode(input).replace(/\+/g, '-').replace(/\//g, '_')
   };
   var urlsafe_b64decode = function(input) {
-    return decode(input.replace('-', '+').replace('_', '/'));
+    return decode(input.replace(/\-/g, '+').replace(/\_/g, '/'));
   };
   var Base64 = {
     encode: encode,
